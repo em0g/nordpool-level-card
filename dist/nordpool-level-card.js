@@ -24,7 +24,7 @@
  * Allt ovan kan också ställas in i den visuella editorn.
  */
 
-const VERSION = '3.1.0';
+const VERSION = '3.2.0';
 
 const DEFAULTS = {
   entity: 'sensor.elpris',
@@ -47,6 +47,9 @@ const ICON_BARS = 'M4 20h2V10H4v10zm5 0h2V4H9v16zm5 0h2v-7h-2v7zm5 0h2V8h-2v12z'
 const ICON_STRIP = 'M3 10h18v4H3z M3 17h2v2H3z M9 17h2v2H9z M15 17h2v2h-2z';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// En sensor från template-paketet: har prislistan och nivågränserna som attribut.
+const isPriceSensor = (st) => !!st && Array.isArray(st.attributes?.prices) && st.attributes.cheap_max !== undefined;
 
 function dayStart(ts) {
   const d = new Date(ts * 1000);
@@ -103,10 +106,7 @@ class NordpoolLevelCard extends HTMLElement {
   }
 
   static getStubConfig(hass) {
-    const found = Object.keys(hass?.states || {}).find((id) => {
-      const a = hass.states[id].attributes;
-      return Array.isArray(a.prices) && a.cheap_max !== undefined;
-    });
+    const found = Object.keys(hass?.states || {}).find((id) => isPriceSensor(hass.states[id]));
     return { entity: found || DEFAULTS.entity };
   }
 
@@ -792,5 +792,13 @@ window.customCards.push({
   description: 'Kompakt elpriskort med nivåerna Billigt / Normalt / Dyrt',
   preview: true,
   documentationURL: 'https://github.com/em0g/nordpool-level-card',
+  // Förslag i kortväljarens Community-sektion (HA 2026.6+) – bara för prissensorn.
+  getEntitySuggestion: (hass, entityId) => {
+    if (!isPriceSensor(hass?.states?.[entityId])) return null;
+    return [
+      { label: 'Staplar', config: { type: 'custom:nordpool-level-card', entity: entityId } },
+      { label: 'Tidslinje-remsa', config: { type: 'custom:nordpool-level-card', entity: entityId, layout: 'strip' } },
+    ];
+  },
 });
 console.info(`%c NORDPOOL-LEVEL-CARD %c ${VERSION} `, 'background:#13a365;color:#fff', '');
