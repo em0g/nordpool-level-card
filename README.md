@@ -46,13 +46,13 @@ Använd en aktuell Home Assistant-version. 2025.10 eller senare rekommenderas, e
    - Skapa inte ett andra `homeassistant:`-block, och lägg inte `packages:` under någon annan nyckel.
    - Ett befintligt `template:` i `configuration.yaml` kan vara kvar, eftersom HA slår ihop det med paketet.
 
-3. Öppna `nordpool_templates.yaml` och ändra inställningarna i det första `variables`-steget:
+3. Öppna `nordpool_templates.yaml` och ändra inställningarna i det första `variables`-steget. `config_entry` måste du alltid fylla i, eftersom filen levereras med platshållaren `ÄNDRA_MIG`:
 
    | Variabel | Exempel | Beskrivning |
    |---|---|---|
    | `config_entry` | `01K4NGWKRNCEJ43FYVXBS2KGN3` | Nord Pool-integrationens id (se nedan) |
    | `area` | `SE3` | Elområde |
-   | `currency` | `SEK` | Valuta |
+   | `currency` | `SEK` | Valuta. Kortet visar alltid kr/öre och sensorn har enheten `SEK/kWh`, så behåll `SEK` |
    | `floor_price` | `0.30` | kr/kWh, alltid **Billigt** under detta |
    | `ceiling_price` | `2.00` | kr/kWh, alltid **Dyrt** över detta |
 
@@ -150,7 +150,7 @@ Attributet `next_change` anger när nivån byter nästa gång, t.ex. `{'level': 
 | Problem | Lösning |
 |---|---|
 | `Invalid config for integration X ... 'X.packages.elpris'` | `packages:` ligger under fel nyckel. Flytta det in i `homeassistant:`-blocket |
-| `sensor.elpris` är otillgänglig | Kontrollera `config_entry`, `area` och `currency`, och att Nord Pool-integrationen fungerar |
+| `sensor.elpris` är otillgänglig | Kontrollera att `config_entry` inte längre är `ÄNDRA_MIG`, att `area` och `currency` stämmer och att Nord Pool-integrationen fungerar |
 | Kortet visar "Entiteten … hittas inte" | Sensorn är inte skapad än eller heter något annat. Välj rätt sensor i editorn |
 | Kortet syns inte i kortväljaren | Ladda om webbläsaren med tömd cache och kontrollera att resursen finns |
 | Marketplace ber om omstart efter installationen | Mappen `www` fanns inte när Home Assistant startade. Starta om en gång |

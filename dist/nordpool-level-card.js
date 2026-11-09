@@ -3,8 +3,8 @@
  *
  * https://github.com/em0g/nordpool-level-card
  *
- * Läser sensor.elpris från nordpool_templates.yaml i
- * https://github.com/em0g/Nordpool-templates (mappen 3.0):
+ * Läser sensor.elpris från template-paketet package/nordpool_templates.yaml
+ * i samma repo:
  *   attributes.prices      [[start_epoch_s, pris_kr], ...]
  *   attributes.cheap_max   pris <= cheap_max  → Billigt
  *   attributes.normal_max  pris <= normal_max → Normalt, annars Dyrt

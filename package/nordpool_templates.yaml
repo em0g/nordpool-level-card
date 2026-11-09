@@ -38,9 +38,9 @@ template:
     actions:
       - variables:
           # ---------- Inställningar ----------
-          config_entry: 01K4NGWKRNCEJ43FYVXBS2KGN3 # Nord Pool-integrationens config entry
+          config_entry: ÄNDRA_MIG # Nord Pool-integrationens config entry – se README
           area: SE3
-          currency: SEK
+          currency: SEK # kortet visar alltid kr/öre, så behåll SEK
           floor_price: 0.30 # kr/kWh – alltid Billigt under detta
           ceiling_price: 2.00 # kr/kWh – alltid Dyrt över detta
           cheap_pct: 0.35
